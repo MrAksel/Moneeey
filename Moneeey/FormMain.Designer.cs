@@ -49,8 +49,8 @@
             this.lblTotDebt = new System.Windows.Forms.Label();
             this.lblTotSpent = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblOweOut = new System.Windows.Forms.Label();
+            this.lblOweIn = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnAddPerson = new System.Windows.Forms.Button();
             this.btnRemovePerson = new System.Windows.Forms.Button();
@@ -80,6 +80,7 @@
             this.lvPeople.UseCompatibleStateImageBehavior = false;
             this.lvPeople.View = System.Windows.Forms.View.Details;
             this.lvPeople.SelectedIndexChanged += new System.EventHandler(this.lvPeople_SelectedIndexChanged);
+            this.lvPeople.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvPeople_KeyDown);
             // 
             // chName
             // 
@@ -118,6 +119,8 @@
             this.lvBoughtItems.UseCompatibleStateImageBehavior = false;
             this.lvBoughtItems.View = System.Windows.Forms.View.Details;
             this.lvBoughtItems.SelectedIndexChanged += new System.EventHandler(this.lvBoughtItems_SelectedIndexChanged);
+            this.lvBoughtItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvBoughtItems_KeyDown);
+            this.lvBoughtItems.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvBoughtItems_MouseDoubleClick);
             // 
             // chProdName
             // 
@@ -152,8 +155,8 @@
             this.groupBox1.Controls.Add(this.lblTotDebt);
             this.groupBox1.Controls.Add(this.lblTotSpent);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.lblOweOut);
+            this.groupBox1.Controls.Add(this.lblOweIn);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(589, 12);
             this.groupBox1.Name = "groupBox1";
@@ -251,23 +254,23 @@
             this.label5.TabIndex = 1;
             this.label5.Text = "Total debt:";
             // 
-            // label6
+            // lblOweOut
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(7, 177);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(120, 13);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "People you owe money:";
+            this.lblOweOut.AutoSize = true;
+            this.lblOweOut.Location = new System.Drawing.Point(7, 177);
+            this.lblOweOut.Name = "lblOweOut";
+            this.lblOweOut.Size = new System.Drawing.Size(120, 13);
+            this.lblOweOut.TabIndex = 1;
+            this.lblOweOut.Text = "People you owe money:";
             // 
-            // label4
+            // lblOweIn
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 63);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(128, 13);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "People owing you money:";
+            this.lblOweIn.AutoSize = true;
+            this.lblOweIn.Location = new System.Drawing.Point(7, 63);
+            this.lblOweIn.Name = "lblOweIn";
+            this.lblOweIn.Size = new System.Drawing.Size(128, 13);
+            this.lblOweIn.TabIndex = 1;
+            this.lblOweIn.Text = "People owing you money:";
             // 
             // label3
             // 
@@ -400,8 +403,8 @@
         private System.Windows.Forms.Label lblTotDebt;
         private System.Windows.Forms.Label lblTotSpent;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblOweOut;
+        private System.Windows.Forms.Label lblOweIn;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnAddPerson;
         private System.Windows.Forms.Button btnRemovePerson;

@@ -78,6 +78,8 @@ namespace Money
 
         void RefreshSummary()
         {
+            lblOweIn.Text = "People owing you money:";
+            lblOweOut.Text = "People you owe money:";
             lblTotDebt.Text = "";
             lblTotSpent.Text = "";
             lvIncome.Items.Clear();
@@ -88,6 +90,9 @@ namespace Money
                 Person person = lvPeople.SelectedItems[0].Tag as Person;
                 if (person != null)
                 {
+                    lblOweIn.Text = string.Format("People owing {0} money:", person.Name);
+                    lblOweOut.Text = string.Format("People {0} owes money:", person.Name);
+
                     decimal totSpent = person.GetTotalSpent();
                     decimal totDebt = currentCalculation.GetDebt(person);
                     decimal totSum = totSpent + totDebt;
@@ -230,6 +235,26 @@ namespace Money
             }
         }
 
+        void RemovePerson(Person person)
+        {
+            foreach (Person per in persons)
+            {
+                foreach (Payment pay in per.Payments)
+                {
+                    foreach (Product prod in pay.Products)
+                    {
+                        prod.Receivers.Remove(person);
+                    }
+                }
+            }
+            persons.Remove(person);
+        }
+
+        void RemoveProduct(Product product)
+        {
+            product.Transaction = null;
+        }
+
 
         private void lvPeople_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -265,7 +290,7 @@ namespace Money
             {
                 Person p = itm.Tag as Person;
                 if (p != null)
-                    persons.Remove(p);
+                    RemovePerson(p);
                 itm.Remove();
             }
             Recalculate();
@@ -278,10 +303,12 @@ namespace Money
         {
             persons.Clear();
 
+            Recalculate();
             RefreshPersons();
             RefreshItems();
             RefreshSummary();
             RefreshButtons();
+            // Dont save now in case the user mispressed
         }
 
 
@@ -336,7 +363,7 @@ namespace Money
             {
                 Product prod = item.Tag as Product;
                 if (prod != null)
-                    prod.Transaction = null;
+                    RemoveProduct(prod);
 
                 item.Remove();
             }
@@ -356,6 +383,36 @@ namespace Money
             RefreshButtons();
             RefreshSummary();
             SaveData();
+        }
+
+
+        private void lvPeople_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                btnRemovePerson_Click(sender, e);
+            }
+        }
+
+        private void lvBoughtItems_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                btnRemoveItem_Click(sender, e);
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                btnEditItem_Click(sender, e);
+            }
+        }
+
+        private void lvBoughtItems_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ListViewHitTestInfo hittest = lvBoughtItems.HitTest(e.Location);
+            if (hittest.Item != null)
+            {
+                btnEditItem_Click(sender, e);
+            }
         }
     }
 }
